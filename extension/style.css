@@ -1,4 +1,4 @@
-html {
+body {
     background: #EEEEEE;
     color: #111111;
 
@@ -6,7 +6,7 @@ html {
     font-family: Verdana;
     text-align: center;
 }
-html.twitch_dark {
+body.twitch_dark {
     background: #111111;
     color: #EEEEEE;
 }
