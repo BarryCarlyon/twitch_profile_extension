@@ -8,7 +8,7 @@ This Twitch Extension primarilly demonstrates the following
 
 ### Front End
 
-- Theme Switching based on the Twithc Theme toggle
+- Theme Switching based on the Twitch Theme toggle
 - Prompting a user to Share their Twitch ID with the Extenion
 - Making a call to a EBS and display the result
 
@@ -29,6 +29,10 @@ A Twitch Extension Back end is also known as an "EBS" or "Extension Backend Serv
 ![EBS Server Log](screenshots/example_ebs.png)
 
 ## Getting Started.
+
+This covers how to get started if you don't already have an extension setup.
+
+If you already do you can just use your existing hosting/test solution and use the existing Extension. And follow from step 12 for the relevant keys/IDs/secrets
 
 1. Visit the Twitch Dev Console to create a new extension. [Link](https://dev.twitch.tv/console/extensions/create)
 1. Give it a Name, you cannot use "Extension," "Twitch," or "Glitch". Hit Continue
