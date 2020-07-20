@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <title>Profile Test Extension</title>
+</head>
+<body>
+    <div id="error"></div>
+    <div id="logged_in">
+        <p>Just a moment.</p>
+        <p>Loading your Twitch profile</p>
+    </div>
+    <div id="logged_out">
+        <p>You need to share your TwitchID to continue</p>
+        <button id="share">Share ID</button>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

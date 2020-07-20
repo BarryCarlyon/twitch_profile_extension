@@ -1,0 +1,35 @@
+html {
+    background: #EEEEEE;
+    color: #111111;
+
+    font-size: 30px;
+    font-family: Verdana;
+    text-align: center;
+}
+html.twitch_dark {
+    background: #111111;
+    color: #EEEEEE;
+}
+
+#logged_in,
+#logged_out {
+    display: none;
+}
+
+.logged_in #logged_in,
+.logged_out #logged_out {
+    display: block
+}
+
+table, button {
+    width: 100%;
+}
+img {
+    width: 50%;
+}
+th, td {
+    font-size: 15px;
+    padding: 2px 3px;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
