@@ -37,25 +37,25 @@ If you already do you can just use your existing hosting/test solution and use t
 1. Visit the Twitch Dev Console to create a new extension. [Link](https://dev.twitch.tv/console/extensions/create)
 1. Give it a Name, you cannot use "Extension," "Twitch," or "Glitch". Hit Continue
 1. Select the Panel checkbox, leave the reset as is. Hit Create
-1. Select "Capabilities" at the top
-1. Select "Yes, I would like my extension to request an identity link." and "Save Changes"
-1. Select "Asset Hosting" at the top
-1. Change "Panel Viewer Path" to "index.html"
-1. Change the "Panel Height" to 500 and "Save Changes"
-1. Top right hit "Extension Settings"
-1. In the ebs folder copy "config_sample.json" to "config.json"
+1. Select `Capabilities` at the top
+1. Select `Yes, I would like my extension to request an identity link.` and `Save Changes`
+1. Select `Asset Hosting` at the top
+1. Change `Panel Viewer Path` to `index.html`
+1. Change the `Panel Height` to 500 and `Save Changes`
+1. Top right hit `Extension Settings`
+1. In the ebs folder copy `config_sample.json` to `config.json`
 1. Change the port as need
-1. Copy the clientID from this page, it's at the top, into the ""  of "client_id" in "config.json"
-1. Under "Twitch API Client Secret" Click on "Generate Secret"
+1. Copy the clientID from this page, it's at the top, into the `""`  of `client_id` in `config.json`
+1. Under `Twitch API Client Secret` Click on `Generate Secret`
 1. Hit OK
-1. Copy the now shown Client Secret into the "" of "client_secret" in "config.json"
+1. Copy the now shown Client Secret into the `""` of `client_secret` in `config.json`
 1. Under "Extension Secrets" on the page hit the "show" button
-1. Copy the now shown key (including any = on the end) into the "" of "extension_secret" in "config.json"
-1. Run "cd" to your ebs folder and run
-1. npm install
-1. node .
-1. In extension copy "config_sample.js" to "config.js"
-1. Change the "https://theURLtoMyEBS" to the URL of your now running EBS
+1. Copy the now shown key (including any = on the end) into the `""` of `extension_secret` in `config.json`
+1. Run by `cd` to your ebs folder and run the commands
+1. `npm install`
+1. `node .`
+1. In extension copy `config_sample.js` to `config.js`
+1. Change the `https://theURLtoMyEBS` to the URL of your now running EBS
 
 For easy what key goes where see
 
