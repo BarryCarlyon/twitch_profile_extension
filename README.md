@@ -57,6 +57,10 @@ If you already do you can just use your existing hosting/test solution and use t
 1. In extension copy "config_sample.js" to "config.js"
 1. Change the "https://theURLtoMyEBS" to the URL of your now running EBS
 
+For easy what key goes where see
+
+![What Key goes where](screenshots/keys.png)
+
 FINALLY
 
 Install the Extension to your channel and test it.
