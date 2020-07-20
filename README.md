@@ -26,6 +26,7 @@ A Twitch Extension Back end is also known as an "EBS" or "Extension Backend Serv
 
 ![Awaiting Share](screenshots/awaiting_share.png)
 ![Shared ID](screenshots/shared_id.png)
+![EBS Server Log](screenshots/example_ebs.png)
 
 ## Getting Started.
 
