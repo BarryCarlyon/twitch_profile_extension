@@ -21,7 +21,7 @@ window.Twitch.ext.onContext((ctx) => {
         document.body.classList.add('twitch_' + new_theme);
     }
 
-    new_theme = last_theme;
+    last_theme = new_theme;
 });
 
 document.getElementById('share').addEventListener('click', (e) => {
