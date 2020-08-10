@@ -72,3 +72,7 @@ These instructions do not cover SSL termination, which is the only gotcha here.
 You can use something like [NGROK](https://ngrok.com/) for testing.
 
 You'd need two tunnels, one for your frontend and one for your backend (or if you know what you are doing just the one). And to adjsut the Extension Console settings (and config.json's) as needed
+
+## GOTCHAS
+
+**The EBS for this server, generates an App Access Token are Boot, but doesn't test it/renew it. So if you use this code for a production EBS it'll probably stop working after 60 days. The EBS is for short demonstrations of the code flow.**
