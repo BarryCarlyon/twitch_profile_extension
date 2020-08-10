@@ -75,4 +75,4 @@ You'd need two tunnels, one for your frontend and one for your backend (or if yo
 
 ## GOTCHAS
 
-**The EBS for this server, generates an App Access Token are Boot, but doesn't test it/renew it. So if you use this code for a production EBS it'll probably stop working after 60 days. The EBS is for short demonstrations of the code flow.**
+**The EBS for this server, generates an App Access Token at Boot, but doesn't test it/renew it. So if you use this code for a production EBS it'll probably stop working after 60 days. The EBS is for short demonstrations of the code flow.**
