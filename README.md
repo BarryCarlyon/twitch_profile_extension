@@ -20,7 +20,9 @@ A Twitch Extension Back end is also known as an "EBS" or "Extension Backend Serv
 - Parsing a JWT Token that was passed up from the front end
 - Calling the Twitch API from the EBS
 
-### What this extension doesn't do is cover SSL hosting. EITHER FOR TESTING OR YOUR EBS
+### What this extension/guide/example doesn't do is cover SSL hosting. EITHER FOR TESTING OR YOUR EBS
+
+So without SSL on your frontend/EBS browsers will usually block access on mixed content grounds.
 
 ### Example Images
 
@@ -71,4 +73,10 @@ These instructions do not cover SSL termination, which is the only gotcha here.
 
 You can use something like [NGROK](https://ngrok.com/) for testing.
 
-You'd need two tunnels, one for your frontend and one for your backend (or if you know what you are doing just the one). And to adjsut the Extension Console settings (and config.json's) as needed
+You'd need two tunnels, one for your frontend and one for your backend (or if you know what you are doing just the one). And to adjsut the Extension Console settings (and config.json's) as needed.
+
+Personally I use NGINX to SSL Terminate, and a reverse SSL tunnel to get traffic from my production server to my local machine.
+
+## GOTCHAS
+
+**The EBS for this server, generates an App Access Token at Boot, but doesn't test it/renew it. So if you use this code for a production EBS it'll probably stop working after 60 days. The EBS is for short demonstrations of the code flow.**
