@@ -82,7 +82,7 @@ app
 
                         req.extension = decoded;
 
-                        console.log('Extesion Data:', req.extension);
+                        console.log('Extension Data:', req.extension);
 
                         next();
                     }

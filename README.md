@@ -59,7 +59,7 @@ If you already do you can just use your existing hosting/test solution and use t
 1. In extension copy `config_sample.js` to `config.js`
 1. Change the `https://theURLtoMyEBS` to the URL of your now running EBS
 
-For easy what key goes where see
+For easy "what key goes where" see this image.
 
 ![What Key goes where](screenshots/keys.png)
 
@@ -73,7 +73,7 @@ These instructions do not cover SSL termination, which is the only gotcha here.
 
 You can use something like [NGROK](https://ngrok.com/) for testing.
 
-You'd need two tunnels, one for your frontend and one for your backend (or if you know what you are doing just the one). And to adjsut the Extension Console settings (and config.json's) as needed.
+You'd need two tunnels, one for your frontend and one for your backend (or if you know what you are doing just the one). And to adjust the Extension Console settings (and config.json's) as needed.
 
 Personally I use NGINX to SSL Terminate, and a reverse SSL tunnel to get traffic from my production server to my local machine.
 
