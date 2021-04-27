@@ -13,7 +13,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "got": "^11.8.1",
+    "got": "^11.8.2",
     "jsonwebtoken": "^8.5.1"
   }
 }
