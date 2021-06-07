@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-/* usual suspects */
+/* Load Configuration, ports and secrets */
 const config = JSON.parse(
     fs.readFileSync(
         path.join(
@@ -11,8 +11,8 @@ const config = JSON.parse(
     )
 );
 
+/* Load Common Libs */
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const got = require('got');
@@ -20,8 +20,21 @@ const got = require('got');
 const app = express();
 const http = require('http').Server(app);
 
+/*
+Twitch will provide the extension secret, base64 encoded
+So we must base64 decode it before we can use it.
+*/
 config.secret = Buffer.from(config.extension_secret, 'base64');
 
+/*
+Lets generate an App Access Token
+
+For example/test purposes
+This generates one token, which will be valid for around 60 days
+And won't refresh/remake it
+But this test server is a test example
+So a refresh/remake shouldn't be needed
+*/
 got({
     url: 'https://id.twitch.tv/oauth2/token',
     method: 'POST',
@@ -44,25 +57,44 @@ got({
             console.log('booted express on', config.port);
         });
     } else {
+        // some thing REALLY went wrong
         console.error('No access_token', resp.body);
         process.exit();
     }
 })
 .catch(err => {
-    console.error('Error at token generation', err.statusCode, err.body);
+    if (err.response) {
+        console.error('Error at token generation', err.response.statusCode, err.response.body);
+    } else {
+        console.error('Error at token generation', err);
+    }
     process.exit();
 });
 
-// a dumb route logger
+/*
+a dumb route logger
+this will log whenever a HTTP request comes in
+for simple debug purposes
+*/
 app.use((req,res,next) => {
     console.log(req.originalUrl);
     next();
 });
 
-// Bind CORS for fetch calls to work
+/*
+Bind CORS for fetch calls to work
+In production you generally wouldn't do this in a global way
+But make it route specific
+*/
 app.use('/', cors());
 
-// Bind a JWT parsing function
+/*
+Bind a JWT parsing function
+Similar to cors probably want to make this route specific
+rather than global
+
+But if this server only does extension traffic then all good to global
+*/
 app
     .use('/:route?', (req, res, next) => {
         if (req.headers['authorization']) {
@@ -97,7 +129,9 @@ app
         }
     })
 
-// and bund the actual event processing
+/*
+And lets actaully setup the API calls/endpoints
+*/
 app.route('/')
     .get((req, res) => {
         res.status('404').json({error: true, message: 'GET Not supported'});
@@ -106,12 +140,17 @@ app.route('/')
         //if (req.extension.hasOwnProperty('channel_id')) {
         if (req.extension.hasOwnProperty('user_id')) {
             console.log('Looking up', req.extension.user_id);
+            // we collected the Extension Logged in userID
+            // so lets call Get users
             got({
-                url: 'https://api.twitch.tv/helix/users?id=' + req.extension.user_id,
+                url: 'https://api.twitch.tv/helix/users',
                 method: 'GET',
                 headers: {
                     'client-id': config.client_id,
                     'authorization': 'Bearer ' + config.api_token
+                },
+                searchParams: {
+                    id: req.extension.user_id
                 },
                 responseType: 'json'
             })
@@ -138,7 +177,3 @@ app.route('/')
             res.status('401').json({error: true, message: 'Not Logged into Extension'});
         }
     });
-
-app.post('/webhooks/', (req, res) => {
-    res.send('Ok');
-});
