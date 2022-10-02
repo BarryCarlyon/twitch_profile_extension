@@ -15,7 +15,6 @@ const config = JSON.parse(
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const got = require('got');
 
 const app = express();
 const http = require('http').Server(app);
@@ -35,41 +34,49 @@ And won't refresh/remake it
 But this test server is a test example
 So a refresh/remake shouldn't be needed
 */
-got({
-    url: 'https://id.twitch.tv/oauth2/token',
-    method: 'POST',
-    form: {
-        client_id: config.client_id,
-        client_secret: config.client_secret,
-        grant_type: 'client_credentials'
-    },
-    responseType: 'json'
-})
-.then(resp => {
-    if (resp.body.hasOwnProperty('access_token')) {
-        config.api_token = resp.body.access_token;
-        console.log('Got a App Access Token', config.api_token);
-        console.log('Ready to start');
 
-        // now raise the server
-        // as we are ready to process
-        http.listen(config.port, function () {
-            console.log('booted express on', config.port);
-        });
-    } else {
-        // some thing REALLY went wrong
-        console.error('No access_token', resp.body);
-        process.exit();
+async function generateTokenAndListen() {
+    let token_url = new URL('https://id.twitch.tv/oauth2/token');
+    token_url.search = new URLSearchParams([
+        [ 'client_id',      config.client_id ],
+        [ 'client_secret',  config.client_secret ],
+        [ 'grant_type',    'client_credentials' ]
+    ]).toString();
+
+    let token_resp = await fetch(
+        token_url,
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }
+    )
+
+    if (token_resp.status == 200) {
+        try {
+            let token_body = await token_resp.json();
+
+            config.api_token = token_body.access_token;
+            console.log('Got a App Access Token', config.api_token);
+            console.log('Ready to start');
+
+            // now raise the server
+            // as we are ready to process
+            http.listen(config.port, function () {
+                console.log('booted express on', config.port);
+            });
+
+            return;
+        } catch (e) {
+            console.error('Error at token generation parse', e);
+            process.exit();
+        }
     }
-})
-.catch(err => {
-    if (err.response) {
-        console.error('Error at token generation', err.response.statusCode, err.response.body);
-    } else {
-        console.error('Error at token generation', err);
-    }
+
+    console.error('Error at token generation', token_resp.status, await token_resp.text());
     process.exit();
-});
+}
 
 /*
 a dumb route logger
@@ -136,44 +143,53 @@ app.route('/')
     .get((req, res) => {
         res.status('404').json({error: true, message: 'GET Not supported'});
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         //if (req.extension.hasOwnProperty('channel_id')) {
         if (req.extension.hasOwnProperty('user_id')) {
             console.log('Looking up', req.extension.user_id);
             // we collected the Extension Logged in userID
             // so lets call Get users
-            got({
-                url: 'https://api.twitch.tv/helix/users',
-                method: 'GET',
-                headers: {
-                    'client-id': config.client_id,
-                    'authorization': 'Bearer ' + config.api_token
-                },
-                searchParams: {
-                    id: req.extension.user_id
-                },
-                responseType: 'json'
-            })
-            .then(resp => {
-                // monitor our rate limit
-                console.log('TwitchAPI Rate:', resp.headers['ratelimit-remaining'], '/', resp.headers['ratelimit-limit']);
-                if (resp.body.data && resp.body.data.length == 1) {
-                    // only return the single user
-                    // no need to dump an array to the front end
-                    res.json({error: false, data: resp.body.data[0]});
-                } else {
-                    res.status('404').json({error: true, message: 'User not found'});
+            let users_url = new URL('https://api.twitch.tv/helix/users');
+            users_url.search = new URLSearchParams([
+                [ 'id', req.extension.user_id ]
+            ]).toString();
+
+            let users_resp = fetch(
+                users_url,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Client-ID': config.client_id,
+                        'Authorization': 'Bearer ' + config.api_token,
+                        'Accept': 'application/json'
+                    }
                 }
-            })
-            .catch(err => {
-                if (err.response.statusCode) {
-                    console.error('Twitch API streams Failed', err.response.statusCode, err.response.body);
-                } else {
-                    console.error('Error', err);
+            )
+
+            if (users_resp.status == 200) {
+                console.log('TwitchAPI Rate:', users_resp.headers.get('ratelimit-remaining'), '/', users_resp.headers.get('ratelimit-limit'));
+                try {
+                    let users_data = await users_resp.json();
+
+                    if (users_data.data && users_data.data.length == 1) {
+                        // only return the single user
+                        // no need to dump an array to the front end
+                        res.json({error: false, data: users_data.data[0]});
+                    } else {
+                        res.status(404).json({error: true, message: 'User not found'});
+                    }
+
+                    return;
+                } catch (e) {
+                    // drop to fail
                 }
-                res.status('500').json({error: true, message: 'Twitch API failed'});
-            })
+            }
+
+            res.status(500).json({error: true, message: 'Twitch API failed'});
         } else {
-            res.status('401').json({error: true, message: 'Not Logged into Extension'});
+            res.status(401).json({error: true, message: 'Not Logged into Extension'});
         }
     });
+
+
+generateTokenAndListen();

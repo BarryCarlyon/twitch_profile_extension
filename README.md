@@ -20,6 +20,8 @@ A Twitch Extension Back end is also known as an "EBS" or "Extension Backend Serv
 - Parsing a JWT Token that was passed up from the front end
 - Calling the Twitch API from the EBS
 
+Note: this EBS expects node.js 18 as it utilises `fetch` built into node.js 18
+
 ### What this extension/guide/example doesn't do is cover SSL hosting. EITHER FOR TESTING OR YOUR EBS
 
 So without SSL on your frontend/EBS browsers will usually block access on mixed content grounds.
