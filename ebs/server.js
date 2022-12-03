@@ -154,7 +154,7 @@ app.route('/')
                 [ 'id', req.extension.user_id ]
             ]).toString();
 
-            let users_resp = fetch(
+            let users_resp = await fetch(
                 users_url,
                 {
                     method: 'GET',
