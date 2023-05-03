@@ -82,3 +82,13 @@ Personally I use NGINX to SSL Terminate, and a reverse SSL tunnel to get traffic
 ## GOTCHAS
 
 **The EBS for this server, generates an App Access Token at Boot, but doesn't test it/renew it. So if you use this code for a production EBS it'll probably stop working after 60 days. The EBS is for short demonstrations of the code flow.**
+
+## CSP
+
+If you are testing this example in Hosted Test or above, you'll need to add your EBS URL to the CSP fields.
+
+You can find those at -> Dev Console -> Manage an Extension -> Manage a Version -> Capabilties
+
+![image](https://user-images.githubusercontent.com/20999/235914212-5e0acfaa-4e2b-466c-af29-51e9980b43a6.png)
+
+See also the [Documentation](https://dev.twitch.tv/docs/extensions/#restrictions-on-content) on Content Restrictions
