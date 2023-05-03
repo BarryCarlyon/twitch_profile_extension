@@ -85,7 +85,7 @@ Personally I use NGINX to SSL Terminate, and a reverse SSL tunnel to get traffic
 
 ## CSP
 
-If you are testing this example in Hosted Test or above, you'll need to add your EBS URL to the CSP fields.
+If you are testing this example in Hosted Test or above, you'll need to add your EBS URL to the CSP fields, specifically the `Allowlist for URL Fetching Domains`
 
 You can find those at -> Dev Console -> Manage an Extension -> Manage a Version -> Capabilties
 
